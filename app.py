@@ -29,12 +29,7 @@ class Movie(db.Model):
     title = db.Column(db.String(60))
     year = db.Column(db.String(4))
 
-@app.errorhandler(404)
-def page_not_found(e):
-    user = User.query.first()
-    return render_template('404.html', user=user), 404
-
-# 注册为命令
+# 注册为命令, 初始化数据库
 @app.cli.command() 
 @click.option('--drop', is_flag=True, help='Create after drop.')
 def initdb(drop):
@@ -43,6 +38,7 @@ def initdb(drop):
     db.create_all()
     click.echo('Initialized database.')
 
+# 注册为命令, 向数据库填充示例数据
 @app.cli.command()
 def forge():
     db.create_all()
@@ -65,12 +61,11 @@ def forge():
 
     db.session.commit()
     click.echo('Done.')
-    
+
 @app.route('/index')
 def index():
-    user = User.query.first()
     movies = Movie.query.all()
-    return render_template('index.html', user=user, movies=movies)
+    return render_template('index.html', movies=movies)
 
 @app.route('/hello')
 def hello():
@@ -88,6 +83,17 @@ def test_url_for():
     print(url_for('test_url_for'))
     print(url_for('test_url_for', num=2))
     return 'Test page'
+
+# 模板上下文处理函数
+@app.context_processor
+def inject_user():
+    user = User.query.first()
+    return dict(user=user)
+
+# 404错误页
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 if __name__ == '__main__':
     # 设置为调试模式

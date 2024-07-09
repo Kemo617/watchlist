@@ -64,8 +64,7 @@ def forge():
 
 @app.route('/index')
 def index():
-    movies = Movie.query.all()
-    return render_template('index.html', movies=movies)
+    return render_template('index.html')
 
 @app.route('/hello')
 def hello():
@@ -84,11 +83,17 @@ def test_url_for():
     print(url_for('test_url_for', num=2))
     return 'Test page'
 
-# 模板上下文处理函数
+# 模板上下文处理函数, 注入用户信息
 @app.context_processor
 def inject_user():
     user = User.query.first()
     return dict(user=user)
+
+# 模板上下文处理函数, 注入电影信息
+@app.context_processor
+def inject_movies():
+    movies = Movie.query.all()
+    return dict(movies=movies)
 
 # 404错误页
 @app.errorhandler(404)

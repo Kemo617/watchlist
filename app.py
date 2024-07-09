@@ -11,16 +11,17 @@ movies = [
     {'title': 'King of Comedy', 'year': '1999'},
     {'title': 'Leon', 'year': '1994'},
     {'title': 'WALL-E', 'year': '2008'},
-    {'title': 'The Pork of Music', 'year': '2012'},
+    {'title': 'The Pork of Music', 'year': '2012'}
 ]
 
-@app.route('/')
+@app.route('/index')
 def index():
     return render_template('index.html', name=name, movies=movies)
 
 @app.route('/hello')
 def hello():
-    return '<h1>Hello Totoro!</h1><img src="http://helloflask.com/totoro.gif">'
+    imag_url = url_for('static', filename='images/halo.jpg')
+    return '<h1>Hello Halo!</h1><img src=%s>' % imag_url
 
 @app.route('/user/<name>')
 def user_page(name):

@@ -10,6 +10,10 @@
     {% endblock %}
 </head>
 <body>
+    <!-- 插入flash消息-->
+    {% for message in get_flashed_messages() %}
+        <div class="alert">{{ message }}</div>
+    {% endfor %}
     <h2>
         <img src="{{ url_for('static', filename='images/halo.png') }}" alt="halo" class="halo">
         {{ user.name }}'s Watchlist

@@ -14,11 +14,11 @@ else:
     prefix = 'sqlite:////'
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = prefix + os.path.join(app.root_path, 'data.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = prefix + os.path.join(os.path.dirname(app.root_path), os.getenv('DATABASE_FILE', 'data.db'))
 # 关闭对模型修改的监控
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # 设置签名所需的密钥
-app.config['SECRET_KEY'] = 'dev'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev')
 # 初始化扩展,传入程序实例app
 db = SQLAlchemy(app)
 # 登陆管理类实例化
@@ -171,7 +171,7 @@ def settings():
         current_user.ownername = ownername
         db.session.commit()
         flash('Settings updated.')
-        
+
     return redirect(url_for('showsettings'))
 
 # 增加记录

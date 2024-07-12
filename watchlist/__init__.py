@@ -34,7 +34,8 @@ def load_user(user_id):
     return user
 
 # 登录视图为起点
-login_manager.login_view = 'showlogin'
+login_manager.login_view = 'login'
+login_manager.login_message = ''
 
 # 模板上下文处理函数, 注入用户信息
 @app.context_processor

@@ -129,3 +129,9 @@ input[name=year] {
 .inline-form {
     display: inline;
 }
+
+.labelwatchlist {
+    text-align:right;
+    width: 65px;
+    display: inline-block;
+}

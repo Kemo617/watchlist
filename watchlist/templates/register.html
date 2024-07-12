@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block maintitle %}
+<h2 align="center">
+    Welcome to Watchlist
+</h2>
+{% endblock %}
+
+{% block content %}
+<form align="center" method="post">
+    {{ form.csrf_token }}
+    <!--可自定义增加颜色-->
+    <p>{{ form.username.label(class="labelwatchlist") }} {{ form.username }}<label style="color:red">*</label></p>
+    <p>{{ form.password.label(class="labelwatchlist") }} {{ form.password }}<label style="color:red">*</label></p>
+    <p>{{ form.repeat_password.label(class="labelwatchlist") }} {{ form.repeat_password }}<label style="color:red">*</label></p>
+    <p>{{ form.email.label(class="labelwatchlist") }} {{ form.email }}<label style="color:red">*</label></p>
+    <p>
+        {{ form.register(class="btn") }}
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="{{ url_for('home') }}">Back</a>
+    </p>
+    {{ form.submit }}
+</form>
+{% endblock %}

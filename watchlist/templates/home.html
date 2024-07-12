@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'basenavi.html' %}
 
 {% block content %}
 {# 使用 length 过滤器获取 movies 变量的长度 #}
@@ -30,5 +30,4 @@
     {# 等同于 movie['title'] #}
     {% endfor %} {# 使用 endfor 标签结束 for 语句 #}
 </ul>
-<img src="{{ url_for('static', filename='images/halo.jpg') }}" alt="halo" class="poo">
 {% endblock %}

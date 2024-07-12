@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
 
+{% block maintitle %}
+<h2>
+    Kemo Watchlist
+</h2>
+{% endblock %}
+
 {% block content %}
 <ul class="movie-list">
     <li>
         Page Not Found - 404
         <span class="float-right">
-            <a href="{{ url_for('index') }}">Go Back</a>
+            <a href="{{ url_for('home') }}">Home</a>
         </span>
     </li>
 </ul>

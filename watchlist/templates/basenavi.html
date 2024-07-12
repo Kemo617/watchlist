@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block maintitle %}
+<h2>
+    {{ user.ownername }}'s Watchlist
+</h2>
+{% endblock %}
+
+{% block navigator %}
+<nav>
+    <ul>
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        {% if current_user.is_authenticated %}
+        <li><a href="{{ url_for('showsettings') }}">Settings</a></li>
+        <li><a class="float-right" href="{{ url_for('logout') }}">Logout</a></li>
+        {% else %}
+        <li><a class="float-right" href="{{ url_for('showlogin') }}">Login</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}

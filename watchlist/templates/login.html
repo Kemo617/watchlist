@@ -13,8 +13,8 @@
     <p>{{ form.username.label(class="labelwatchlist") }} {{ form.username }}</p>
     <p>{{ form.password.label(class="labelwatchlist") }} {{ form.password }}</p>
     <p>
-        {{ form.submitlogin(class="btn") }}
-        &nbsp;&nbsp;&nbsp;&nbsp;
+        {{ form.submitlogin(class="btn", align="left") }}
+        &nbsp;&nbsp;
         <a href="{{ url_for('register') }}">Register</a>
     </p>
     {{ form.submit }}

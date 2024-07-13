@@ -4,12 +4,12 @@
     {% block head %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Watchlist</title>
-    <link rel="icon" href="{{ url_for('static', filename='images/halo.png') }}">
+    <title>盯盘助手</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/coin.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
     {% endblock %}
 </head>
-<body>
+<body style="background-color:aliceblue;">
     <!-- 插入flash消息-->
     {% for message in get_flashed_messages() %}
         <div class="alert">{{ message }}</div>
@@ -20,7 +20,7 @@
     {% block content %}{% endblock %}
     <!-- 页脚 -->
     <footer>
-        <img src="{{ url_for('static', filename='images/halo.jpg') }}" alt="halo" class="poo">
+        <img src="{{ url_for('static', filename='images/kitty.gif') }}" alt="halo" class="poo">
         <small>&copy; 2024 Kemo </small>
     </footer>
 </body>

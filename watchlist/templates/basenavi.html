@@ -2,19 +2,16 @@
 
 {% block maintitle %}
 <h2>
-    {{ user.ownername }}'s Watchlist
+    {{ user.username }}的盯盘
 </h2>
 {% endblock %}
 
 {% block navigator %}
 <nav>
     <ul>
-        <li><a href="{{ url_for('home') }}">Home</a></li>
-        {% if current_user.is_authenticated %}
-        <li><a href="{{ url_for('showsettings') }}">Settings</a></li>
-        <li><a class="float-right" href="{{ url_for('logout') }}">Logout</a></li>
-        {% else %}
-        <li><a class="float-right" href="{{ url_for('login') }}">Login</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{{ url_for('home') }}">自选股列表</a></li>
+        <li><a class="float-right" href="{{ url_for('logout') }}">登出</a></li>
         {% endif %}
     </ul>
 </nav>

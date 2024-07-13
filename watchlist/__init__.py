@@ -37,19 +37,20 @@ def load_user(user_id):
 login_manager.login_view = 'login'
 login_manager.login_message = ''
 
+
 # 模板上下文处理函数, 注入用户信息
 @app.context_processor
 def inject_user():
-    from watchlist.models import User
-    user = User.query.first()
-    return dict(user=user)
-
+    from flask_login import current_user
+    return dict(user=current_user)
+'''
 # 模板上下文处理函数, 注入电影信息
 @app.context_processor
 def inject_movies():
     from watchlist.models import Movie
     movies = Movie.query.all()
     return dict(movies=movies)
+'''
 
 from watchlist import test, commands
 from watchlist.views import errors, home, register, login, settings, item

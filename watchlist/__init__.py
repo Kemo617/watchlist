@@ -53,4 +53,5 @@ def inject_movies():
 '''
 
 from watchlist import test, commands
-from watchlist.views import errors, home, register, login, settings, item
+from watchlist.views import errors, home, login, operations, register, settings
+from watchlist.controls import mail

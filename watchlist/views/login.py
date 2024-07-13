@@ -2,9 +2,10 @@ from flask import render_template, request, flash, redirect, url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length
-from watchlist import app
+from watchlist import app, db
 from watchlist.models import User
 from flask_login import login_required, login_user, logout_user
+from watchlist.controls.mail import send_confirm_mail
 
 # ...
 
@@ -24,13 +25,21 @@ def login():
             username = form.username.data
             password = form.password.data
 
-            user = User.query.first()
-            if username == user.username and user.validate_password(password):
-                login_user(user)
-                flash(u"已登入.")
-                return redirect(url_for('home'))
+            user = User.query.filter_by(username=username).first()
+            if user is not None:
+                if user.validate_password(password):
+                    if user.is_activated:
+                        login_user(user)
+                        flash(u"已登入.")
+                        return redirect(url_for('home'))
+                    else:
+                        if send_confirm_mail(user):
+                            flash(u"注册确认邮件已再次发送.")
+                            db.session.commit()
+                else:
+                    flash(u"密码错误.")
             else:
-                flash(u"错误的用户名或密码.")
+                flash(u"用户未注册. 请留意大小写.")
         else:
             flash(u"无效输入.")
 

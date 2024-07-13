@@ -2,9 +2,10 @@ from flask import render_template, request, flash, redirect, url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, EmailField
 from wtforms.validators import DataRequired, EqualTo, Length, Email
-from watchlist import app
+from watchlist import app, db
 from watchlist.models import User
 from flask_login import login_required, login_user, logout_user
+from watchlist.controls.mail import send_confirm_mail
 
 # ...
 
@@ -26,7 +27,20 @@ def register():
             username = form.username.data
             repeat_password = form.password.data
             email = form.email.data
-            flash(username + repeat_password + email)
+            
+            user = User.query.filter_by(username=username).first()
+            if user is not None:
+                flash(u'用户名已存在.')
+            else:
+                user = User()
+                user.username = username
+                user.email = email
+                user.set_password(repeat_password)
+                if send_confirm_mail(user):
+                    flash(u'注册确认邮件已发送.')
+                db.session.add(user)
+                db.session.commit()
+                return redirect(url_for('login'))
         else:
             tips = ''
             for msg in form.repeat_password.errors:
@@ -34,7 +48,7 @@ def register():
             for msg in form.email.errors:
                 tips = msg
             if tips == '':
-                tips = 'Please check Inputs.'
+                tips = '请检查各项输入.'
             flash(tips)
             
     return render_template('register.html', form=form)

@@ -1,7 +1,7 @@
 import click
 from watchlist import app, db
 from watchlist.models import User, SMTP
-from datetime import datetime
+from sqlalchemy import text
 
 # ...
 
@@ -16,24 +16,24 @@ def initdb():
 # 设置smtp信息
 @app.cli.command()
 @click.option('--server', prompt=True, help="The smtp server used to send emails.")
-@click.option('--sender', prompt=True, help="The sender's email account.")
+@click.option('--sendername', prompt=True, help="The sender's name.")
+@click.option('--senderaddress', prompt=True, help="The sender's email account.")
 @click.option('--password', prompt=True, help="The password used to send emails.")
-def setsmtp(server, sender, password):
+def setsmtp(server, sendername, senderaddress, password):
     db.create_all()
 
     smtp = SMTP.query.first()
     if smtp is not None:
         click.echo('Updating smtp infos ...')
-        smtp.server = server
-        smtp.sender = sender
-        smtp.password = password
     else:
         click.echo('Creating smtp infos ...')
         smtp = SMTP()
-        smtp.server = server
-        smtp.sender = sender
-        smtp.password = password
         db.session.add(smtp)
+
+    smtp.server = server
+    smtp.sendername = sendername
+    smtp.senderaddress = senderaddress
+    smtp.password = password
 
     db.session.commit()
     click.echo('Done.')
@@ -54,10 +54,9 @@ def setuser(username, password, email):
     else:
         click.echo('Creating user ...')
         user = User()
-        user.email = email
         user.username = username
+        user.email = email
         user.set_password(password)
-        user.register_time = datetime.now()
         db.session.add(user)
 
     db.session.commit()
@@ -65,18 +64,76 @@ def setuser(username, password, email):
 
 # 激活用户
 @app.cli.command()
-@click.option('--email', prompt=True, help="Activate user by email.")
-def activate(email):
+@click.option('--username', prompt=True, help="Activate user.")
+def activateuser(username):
     db.create_all()
 
-    user = User.query.filter_by(email=email).first()
+    user = User.query.filter_by(username=username).first()
     if user is not None:
         if user.is_activated:
-            click.echo('User %s already activated.' % user.username)
+            click.echo('User %s already activated.' % username)
         else:
-            click.echo('Activating user %s ...' % user.username)
+            click.echo('Activating user %s ...' % username)
             user.is_activated = True
             db.session.commit()
             click.echo('Done')
     else:
         click.echo('User not existed.')
+
+# 设置用户为未激活
+@app.cli.command()
+@click.option('--username', prompt=True, help="Deactivate user.")
+def deactivateuser(username):
+    db.create_all()
+
+    user = User.query.filter_by(username=username).first()
+    if user is not None:
+        if user.is_activated:
+            click.echo('Deactivating user %s ...' % username)
+            user.is_activated = False
+            user.renewregistertime()
+            db.session.commit()
+            click.echo('Done')      
+        else:
+            user.renewregistertime()
+            click.echo('User %s already deactivated.' % username)
+    else:
+        click.echo('User not existed.')
+
+# 打印用户
+@app.cli.command()
+def listusers():
+    db.create_all()
+
+    for user in User.query.all():
+        print(user.username)
+    
+# 删除用户
+@app.cli.command()
+@click.option('--username', prompt=True, help="Delete user.")
+def deleteuser(username):
+    db.create_all()
+
+    user = User.query.filter_by(username=username).first()
+    if user is not None:
+        click.echo('Deleting user %s ...' % username)
+        db.session.delete(user)
+        db.session.commit()
+        click.echo('Done')
+    else:
+        click.echo('User not existed.')
+        
+# 删除用户表
+@app.cli.command()
+def deleteusertable():
+    db.create_all()
+    db.session.execute(text("DROP TABLE IF EXISTS users"))
+    click.echo('Done')
+    db.create_all()
+
+# 清理数据库
+@app.cli.command()
+def cleandb():
+    db.create_all()
+    # 清理删除用户后, 在个股表的残留
+    click.echo('Done.')

@@ -1,13 +1,19 @@
-{% extends 'base.html' %}
-
-{% block maintitle %}
-<h2 align="center">
-    注册信息确认
-</h2>
-{% endblock %}
-
-{% block content %}
-<form align="center" method="post">
-    
-</form>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head></head>
+<body style="background-color:aliceblue;">
+    <h2 align="center">
+        注册信息确认
+    </h2>
+    <div align="center">
+        <p><a href="{{ 'http://kemo.pythonanywhere.com' + url_for('confirm', username=user.username, confirm_code=user.confirm_code)}}">点击这里</a></p>
+        <p>或复制 "{{ 'http://kemo.pythonanywhere.com' + url_for('confirm', username=user.username, confirm_code=user.confirm_code)}}" 到浏览器访问</p>
+    </div>
+    <!-- 页脚 -->
+    <div align="center">
+        <p><img src="{{ 'http://kemo.pythonanywhere.com/' + url_for('static', filename='images/kitty.gif') }}" alt="hello" width="88" height="88">
+        <br /><small>&copy; 2024 Kemo </small></p>
+        
+    </div>
+</body>
+</html>

@@ -1,7 +1,6 @@
 import smtplib
 from email.message import EmailMessage
 from watchlist.models import SMTP
-from watchlist import db
 from flask import render_template, flash
 
 # ...
@@ -20,12 +19,13 @@ def send_confirm_mail(user):
             sendername = smtpinfo.sendername
             senderaddress = smtpinfo.senderaddress
             password = smtpinfo.password
+            html_content = render_template('confirm_email.html', user=user)
 
             message = EmailMessage()
             message['From'] = "%s<%s>" % (sendername, senderaddress)
             message['To'] = "%s<%s>" % (user.username, user.email)
             message['Subject'] = '注册确认'
-            message.set_content('注册确认')
+            message.set_content(html_content, subtype='html')
             with smtplib.SMTP(servername) as server:
                 server.ehlo()
                 server.starttls()

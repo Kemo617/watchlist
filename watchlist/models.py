@@ -47,7 +47,7 @@ class User(db.Model, UserMixin):
         now = datetime.now()
         time_difference = now - self.register_time
         # 5分钟后可以再次发送
-        interval = 20 - round(time_difference.total_seconds())
+        interval = 300 - round(time_difference.total_seconds())
         
         if self.resendtimes > 2:
             interval = 0

@@ -52,3 +52,24 @@ def register():
             flash(tips)
             
     return render_template('register.html', form=form)
+
+# 用户点击确认链接
+@app.route('/confirm')
+def confirm():
+    username = request.args.get('username')
+    confirm_code = request.args.get('confirm_code')
+    user = User.query.filter_by(username=username).first()
+    confirm_result = u'未知'
+    if user is not None:
+        if user.is_activated:
+            confirm_result = u"账号'%s'已经确认过了" % username
+        elif confirm_code == user.confirm_code:
+            confirm_result = u"账号'%s'确认完毕" % username
+            user.is_activated = True
+            db.session.commit()
+        else:
+            confirm_result = u"确认码校验错误"
+    else:
+        confirm_result = u"账号'%s'不存在" % username 
+    
+    return render_template('confirm_result.html', confirm_result=confirm_result)

@@ -36,7 +36,7 @@ def send_confirm_mail(user):
                     user.addresendtimes()
                     result = True
             except BaseException as e:
-                flash("发送异常-->{e}")
+                flash(f"邮件发送异常 --> {e}")
     else:
         flash(u"已经发了三次注册确认邮件. 换个可用的邮箱重新注册吧.")
     

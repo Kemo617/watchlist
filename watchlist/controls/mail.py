@@ -10,23 +10,30 @@ def send_confirm_mail(user):
     result = False
     smtpinfo = SMTP.query.first()
 
+    # 调试
+    print('get smtp info ..')
     sendInterval = user.time2sendconfirm()
     if sendInterval > 0:
         flash(u"请检查您邮箱中的注册确认信息. 如未收到, %s秒后可以重新发送邮件." % sendInterval)
     elif sendInterval < 0:
         if smtpinfo is not None:
+            # 调试
+            print('begin to fill server info ..')
             servername = smtpinfo.server
             sendername = smtpinfo.sendername
             senderaddress = smtpinfo.senderaddress
             password = smtpinfo.password
             html_content = render_template('confirm_email.html', user=user)
-
+            # 调试
+            print('begin to send..')
             message = EmailMessage()
             message['From'] = "%s<%s>" % (sendername, senderaddress)
             message['To'] = "%s<%s>" % (user.username, user.email)
             message['Subject'] = '注册确认'
             message.set_content(html_content, subtype='html')
             with smtplib.SMTP(servername) as server:
+                # 调试
+                print('sending ..')
                 server.ehlo()
                 server.starttls()
                 server.login(senderaddress, password)

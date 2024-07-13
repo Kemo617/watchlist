@@ -38,9 +38,11 @@ def register():
                 user.set_password(repeat_password)
                 if send_confirm_mail(user):
                     flash(u'注册确认邮件已发送.')
-                db.session.add(user)
-                db.session.commit()
-                return redirect(url_for('login'))
+                    db.session.add(user)
+                    db.session.commit()
+                    return redirect(url_for('login'))
+                else:
+                    flash(u'注册确认邮件未发送')
         else:
             tips = ''
             for msg in form.repeat_password.errors:

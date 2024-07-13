@@ -36,8 +36,6 @@ def register():
                 user.username = username
                 user.email = email
                 user.set_password(repeat_password)
-                # 调试
-                print('begin sending confirm mail ..')
                 if send_confirm_mail(user):
                     flash(u'注册确认邮件已发送.')
                 db.session.add(user)

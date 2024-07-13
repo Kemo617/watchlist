@@ -37,7 +37,6 @@ def load_user(user_id):
 login_manager.login_view = 'login'
 login_manager.login_message = ''
 
-
 # 模板上下文处理函数, 注入用户信息
 @app.context_processor
 def inject_user():

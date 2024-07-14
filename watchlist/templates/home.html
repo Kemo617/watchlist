@@ -3,7 +3,7 @@
 {% block content %}
 
 {# 使用 length 过滤器获取 stocks 变量的长度 #}
-<p>已经关注了{{ stocks|length }}支股票, 最多关注5支.</p>
+<p>已经添加了{{ stocks|length }}支股票, 最多5支.</p>
 {% if user.is_authenticated %}
 <form method="post" action="{{ url_for('add') }}">
     股票代码 <input type="text" name="stockcode" autocomplete="off" required>
@@ -11,20 +11,40 @@
 </form>
 {% endif %}
 <ul class="stock-list">
-    {% for stock in stocks %} {# 遍历 stocks #}
-    <li>{{ stock.title }} - {{ stock.year }}
+    {% for stock in stocks %}
+    <li>
+        <label class="labelstockcode">{{ stock.stockcode }}</label>
+        <label class="labelstockname">{{ stock.stockname }}</label>
+        <label class="labelstockpricetip">当前价</label>
+        {% if stock.getcolor() == 'red' %}
+        <label class="labelstockpriceRed">{{ stock.pricenow }}</label>
+        {% endif %}
+        {% if stock.getcolor() == 'green' %}
+        <label class="labelstockpriceGreen">{{ stock.pricenow }}</label>
+        {% endif %}
+        {% if stock.getcolor() == 'black' %}
+        <label class="labelstockprice">{{ stock.pricenow }}</label>
+        {% endif %}
+        {% if stock.flag_is_informing %}
+        <label class="labelstockpricetip">目标低价</label>
+        <label class="labelstockpriceset">{{ stock.priceminset }}</label>
+        <label class="labelstockpricetip">目标高价</label>
+        <label class="labelstockpriceset">{{ stock.pricemaxset }}</label>
+        {% endif %}
         <span class="float-right">
-            {% if user.is_authenticated %}
+            <form class="inline-form" method="post" action="{{ url_for('edit') }}">
+                <input type="hidden" name="stockcode" value="{{ stock.stockcode }}">
+                <input class="btn" type="submit" name="edit" value="设置">
+            </form>
             <form class="inline-form" method="post" action="{{ url_for('delete') }}">
-                <input type="hidden" name="stock_id" value="{{ stock.id }}">
+                <input type="hidden" name="stockcode" value="{{ stock.stockcode }}">
                 <input class="btn" type="submit" name="delete" value="删除" onclick="return confirm('确定删除?')">
             </form>
-            {% endif %}
-            <a class="imdb" href="https://www.imdb.com/find?q={{ stock.title }}" target="_blank" title="查看详细个股信息">IMDb</a>
         </span>
     </li>
-    {# 等同于 stock ['title'] #}
-    {% endfor %} {# 使用 endfor 标签结束 for 语句 #}
+    {% endfor %} 
 </ul>
 
 {% endblock %}
+
+<!-- <a class="imdb" href="https://www.imdb.com/find?q={{ stock.title }}" target="_blank" title="查看详细个股信息">IMDb</a> -->

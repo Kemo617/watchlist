@@ -28,8 +28,13 @@ def register():
             email = form.email.data
             
             user = User.query.filter_by(username=username).first()
-            if user is not None:
+            useraddress = User.query.filter_by(email=email).first()
+            if len(User.query.all()) > 9:
+                flash(u'用户已超过10人, 不再接受注册.')
+            elif user is not None:
                 flash(u'用户名已存在.')
+            elif useraddress is not None:
+                flash(u'邮箱已被注册')
             else:
                 user = User()
                 user.username = username

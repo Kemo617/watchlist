@@ -1,18 +1,20 @@
-from flask import redirect, url_for
-from watchlist import app
-from flask_login import login_required
+from flask import redirect, url_for, request, flash
+from watchlist import app, db
+from flask_login import login_required, current_user
+from watchlist.models import Stock
 
 # ...
 
 # 删除记录
-@app.route('/movie/delete', methods=['POST'])
+@app.route('/stock/delete', methods=['POST'])
 @login_required 
 def delete():
-    '''
-    movie_id = request.form['movie_id']
-    movie = Movie.query.get_or_404(movie_id)
-    db.session.delete(movie)
-    db.session.commit()
-    flash('Item deleted.')
-    '''
+    stockcode = request.form['stockcode']
+    stocks = Stock.query.filter_by(username=current_user.username, stockcode=stockcode).all()
+
+    for stock in stocks: 
+        db.session.delete(stock)
+        db.session.commit()
+        flash('删除了一支自选股票.')
+
     return redirect(url_for('home'))

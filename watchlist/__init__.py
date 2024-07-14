@@ -47,12 +47,19 @@ def inject_user():
 @app.context_processor
 def inject_stocks():
     from watchlist.models import Stock
-    stocks = Stock.query.all()
+    from flask_login import current_user
+    stocks = []
+    
+    try:
+        stocks = Stock.query.filter_by(username=current_user.username).all()
+    except:
+        pass
+
     return dict(stocks=stocks)
 
 
 from watchlist import test, commands
 from watchlist.views import errors, home, login, register, settings
 from watchlist.views.operations import add, delete, edit, update
-from watchlist.controls import mail, stock
+from watchlist.controls import mail, stock, common
 

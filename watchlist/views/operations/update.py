@@ -1,28 +1,30 @@
-from flask import redirect, url_for
-from watchlist import app
-from flask_login import login_required
+from flask import redirect, url_for, request, flash
+from watchlist import app, db
+from watchlist.models import Stock
+from flask_login import login_required, current_user
 
 # ...
 
 # 更新记录
-@app.route('/movie/update', methods=['POST'])
+@app.route('/stock/update', methods=['POST'])
 @login_required 
 def update():
-    '''
-    title = request.form['title']
-    year = request.form['year']
-    movie_id = request.form['movie_id']
+    try:
+        priceminset = float(request.form['priceminset'])
+        pricemaxset = float(request.form['pricemaxset'])
+        flag_is_informing = bool(request.form.get('setinform'))
+        stockcode = request.form['stockcode']
 
-    if not title or not year or len(year) > 4 or len(title) > 60:
-        # 显示错误提示
-        flash('Invalid input.')
-    else:
-        # 更新表单数据
-        movie = Movie.query.get_or_404(movie_id)
-        movie.title =title
-        movie.year = year
-        db.session.commit()
-        flash('Item updated.')
+        stocks = Stock.query.filter_by(username=current_user.username, stockcode=stockcode).all()
 
-    '''
+        for stock in stocks: 
+            stock.priceminset = 0.0 if priceminset < 0 else priceminset
+            stock.pricemaxset = 0.0 if pricemaxset < 0 else pricemaxset
+            stock.flag_is_informing = flag_is_informing
+            db.session.commit()
+            flash('更新了对自选股票的邮件提醒设置.')
+    except BaseException as e:
+                flash(f"个股设置异常 --> {e}")
+
+    
     return redirect(url_for('home'))

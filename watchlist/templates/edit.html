@@ -1,11 +1,31 @@
 {% extends 'basenavi.html' %}
 
 {% block content %}
-<h3>Edit item</h3>
-<form action="{{ url_for('update') }}" method="post">
-    Name <input type="text" name="title" autocomplete="off" required value="{{ movie.title }}">
-    Year <input type="text" name="year" autocomplete="off" required value="{{ movie.year }}">
-    <input type="hidden" name="movie_id" value="{{ movie.id }}">
-    <input class="btn" type="submit" name="submit" value="Update">
-</form>
+<p>邮件提醒设置</p>
+<ul class="stock-list">
+    <li>
+        <label class="labelstockcode">{{ stock.stockcode }}</label>
+        <label class="labelstockname">{{ stock.stockname }}</label>
+        <span>
+            <form class="inline-form" method="post" action="{{ url_for('update') }}">
+                <label for="priceminset" class="normaltipright">目标低价</label>
+                <input type="number" name="priceminset" value="{{ stock.priceminset }}" step="0.01" style="width: 60px; text-align:center;" min="0">
+                <label for="pricemaxset" class="normaltipright">目标高价</label>
+                <input type="number" name="pricemaxset" value="{{ stock.pricemaxset }}" step="0.01" style="width: 60px; text-align:center;" min="0">
+                <label for="setinform" class="normaltip" style="width: 25px; text-align:right;" >提醒</label>
+                {% if stock.flag_is_informing %}
+                <input type="checkbox" name="setinform"  checked>
+                {% endif %}
+                {% if not stock.flag_is_informing %}
+                <input type="checkbox" name="setinform"  unchecked>
+                {% endif %}
+                <input type="hidden" name="stockcode" value="{{ stock.stockcode }}">
+                <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input class="btn" type="submit" name="submit" value="应用">
+            </form>
+        </span>
+    </li>
+</ul>
+<p>设置生效后, 如果股票当前价高于'目标高价'或低于'目标低价', 注册邮箱会收到提醒.</p> 
+<p class="normaltipbold">注: 每日最多提醒1次.</p>
 {% endblock %}

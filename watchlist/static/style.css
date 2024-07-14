@@ -74,16 +74,6 @@ nav li a:hover {
     float: right;
 }
 
-.imdb {
-    font-size: 12px;
-    font-weight: bold;
-    color: black;
-    text-decoration: none;
-    background: #F5C518;
-    border-radius: 5px;
-    padding: 3px 5px;
-}
-
 /* 覆盖某些浏览器对 input 元素定义的字体 */
 input[type=submit] {
     font-family: inherit;
@@ -126,6 +116,16 @@ input[name=year] {
     border-radius: 5px;
 }
 
+.imdb {
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+    background: #F5C518;
+    border-radius: 5px;
+    padding: 3px 5px;
+}
+
 .inline-form {
     display: inline;
 }
@@ -134,4 +134,96 @@ input[name=year] {
     text-align:right;
     width: 65px;
     display: inline-block;
+}
+
+.labelstockname {
+    font-weight: bold;
+    text-align:left;
+    width: 60px;
+    display: inline-block;
+}
+
+.labelstockcode {
+    text-align:left;
+    width: 60px;
+    display: inline-block;
+}
+
+.labelstockpricetip {
+    font-size: 10px;
+    text-align:right;
+    width: 40px;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 3px 5px;
+}
+
+.labelstockpriceRed {
+    font-weight: bold;
+    text-align:center;
+    width: 50px;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 3px 5px;
+    text-decoration: none;
+    background: #d7f2f7;
+    color: red;
+}
+
+.labelstockpriceGreen {
+    font-weight: bold;
+    text-align:center;
+    width: 50px;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 3px 5px;
+    text-decoration: none;
+    background: #d7f2f7;
+    color: green;
+}
+
+.labelstockprice {
+    font-weight: bold;
+    text-align:center;
+    width: 50px;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 3px 5px;
+    text-decoration: none;
+    background: #d7f2f7;
+    color: black;
+}
+
+.labelstockpriceset {
+    font-weight: bold;
+    font-size: 12px;
+    text-align:center;
+    width: 30px;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 3px 5px;
+    text-decoration: none;
+    background: #d7f2f7;
+}
+
+.normaltip {
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 3px 5px;
+}
+
+.normaltipright {
+    font-size: 12px;
+    text-align:right;
+    width: 50px;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 3px 5px;
+}
+
+.normaltipbold {
+    font-weight: bold;
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 3px 5px;
 }

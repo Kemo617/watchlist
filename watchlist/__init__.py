@@ -42,15 +42,17 @@ login_manager.login_message = ''
 def inject_user():
     from flask_login import current_user
     return dict(user=current_user)
-'''
+
 # 模板上下文处理函数, 注入电影信息
 @app.context_processor
-def inject_movies():
-    from watchlist.models import Movie
-    movies = Movie.query.all()
-    return dict(movies=movies)
-'''
+def inject_stocks():
+    from watchlist.models import Stock
+    stocks = Stock.query.all()
+    return dict(stocks=stocks)
+
 
 from watchlist import test, commands
-from watchlist.views import errors, home, login, operations, register, settings
-from watchlist.controls import mail
+from watchlist.views import errors, home, login, register, settings
+from watchlist.views.operations import add, delete, edit, update
+from watchlist.controls import mail, stock
+

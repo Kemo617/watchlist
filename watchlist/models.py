@@ -62,8 +62,32 @@ class User(db.Model, UserMixin):
     def addresendtimes(self):
         self.resendtimes += 1
         
-class Movie(db.Model):
+class Stock(db.Model):
     __tablename__ = "stocks"
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(60))
-    year = db.Column(db.String(4))
+    stockcode = db.Column(db.String(20)) # 股票代码
+    stockname = db.Column(db.String(20)) # 股票名称
+    user_id = db.Column(db.Integer) # 用户id
+    pricenow = db.Column(db.Float) # 当前价格
+    pricemaxset = db.Column(db.Float)
+    priceminset = db.Column(db.Float)
+    flag_max_informed = db.Column(db.Boolean)
+    flag_min_informed = db.Column(db.Boolean)
+    flag_is_informing = db.Column(db.Boolean)
+
+    def __init__(self):
+        # 设置的高提示价格
+        self.pricemaxset = -1.0
+        # 设置的低提示价格
+        self.priceminset = -1.0
+        # 发送标识
+        self.flag_max_informed = False
+        self.flag_min_informed = False
+        # 是否发送
+        self.flag_is_informing = False
+
+
+    # 重置发送标识, 每天至少自动重置一次
+    def resetflags(self):
+        self.flag_max_informed = False
+        self.flag_min_informed = False

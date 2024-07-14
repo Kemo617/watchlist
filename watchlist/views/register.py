@@ -4,7 +4,6 @@ from wtforms import StringField, PasswordField, SubmitField, EmailField
 from wtforms.validators import DataRequired, EqualTo, Length, Email
 from watchlist import app, db
 from watchlist.models import User
-from flask_login import login_required, login_user, logout_user
 from watchlist.controls.mail import send_confirm_mail
 
 # ...

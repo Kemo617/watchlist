@@ -47,8 +47,8 @@ def getStockName(stockcode):
 
         if stockcode == dataDict['SCODE']:
             result = dataDict['SNAME']
-    except:
-        pass
+    except BaseException as e:
+        flash(f"股票信息获取异常 --> {e}")
     
     return result
 
@@ -66,7 +66,7 @@ def getStockPrices(stockcode):
             stockPrice = dataDict['details'][-1].split(',')[1]
             stockPrePrice = dataDict['prePrice']
             result = (stockPrice, stockPrePrice)
-    except:
-        pass
+    except BaseException as e:
+            flash(f"股票信息获取异常 --> {e}")
 
     return result

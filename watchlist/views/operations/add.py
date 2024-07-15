@@ -36,6 +36,8 @@ def add():
                 db.session.add(stock)
                 db.session.commit()
                 flash('增加了一支自选股.')
+            else:
+                flash('没找到这支股票.')
 
     return redirect(url_for('home'))
 

@@ -3,8 +3,8 @@ import sys
 import requests as req
 
 from flask import Flask
-from flask_login import LoginManager
 from flask_socketio import SocketIO
+from flask_login import LoginManager
 from watchlist.database import db
 from watchlist.schedule import scheduler
 

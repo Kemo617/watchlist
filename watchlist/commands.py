@@ -1,5 +1,6 @@
 import click
-from watchlist import app, db
+from watchlist import app
+from watchlist.database import db
 from watchlist.models import User, SMTP
 from sqlalchemy import text
 

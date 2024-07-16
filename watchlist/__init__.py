@@ -1,9 +1,12 @@
 import os
 import sys
+import requests as req
 
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_socketio import SocketIO
+from watchlist.database import db
+from watchlist.schedule import scheduler
 
 # ...
 
@@ -23,7 +26,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # session 存储所需的密钥
 app.config['SECRET_KEY'] = 'kinson'
 
-db = SQLAlchemy(app)
+db.init_app(app)
 login_manager = LoginManager(app)
 
 # 用户加载回调函数
@@ -36,6 +39,13 @@ def load_user(user_id):
 # 登录视图为起点
 login_manager.login_view = 'login'
 login_manager.login_message = ''
+
+# 初始化定时任务
+scheduler.init_app(app)
+scheduler.start()
+
+# 初始化socketio
+socketio = SocketIO(app)
 
 # 模板上下文处理函数, 注入用户信息
 @app.context_processor
@@ -57,9 +67,7 @@ def inject_stocks():
 
     return dict(stocks=stocks)
 
-
-from watchlist import test, commands
+from watchlist import test, commands, database, schedule
 from watchlist.views import errors, home, login, register, settings
 from watchlist.views.operations import add, delete, edit, update
-from watchlist.controls import mail, stock, common
-
+from watchlist.controls import mail, stock, common, sendInformEmails, updateStockInfoTask, freshPage

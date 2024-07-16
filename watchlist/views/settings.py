@@ -1,7 +1,11 @@
-from watchlist import app, db
+from watchlist import app
+from watchlist.database import db
 from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_required
 from flask_login import current_user
+
+# ...
+
 # 显示设置页面
 @app.route('/settings')
 def showsettings():

@@ -1,5 +1,6 @@
 from flask import redirect, url_for, request, flash
-from watchlist import app, db
+from watchlist import app
+from watchlist.database import db
 from flask_login import login_required, current_user
 from watchlist.controls.stock import get_stock_info
 from watchlist.controls.common import get_stockcodes
@@ -37,7 +38,7 @@ def add():
                 db.session.commit()
                 flash('增加了一支自选股.')
             else:
-                flash('没找到这支股票.')
+                flash('股票信息添加失败.')
 
     return redirect(url_for('home'))
 

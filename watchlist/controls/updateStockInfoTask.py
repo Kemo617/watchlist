@@ -18,7 +18,7 @@ class UpdateTrigger():
         shanghaiTime = getTimeNow()
         weekday = shanghaiTime.today().weekday()
         startTime = getTimeNow().replace(hour=9, minute=29, second=0)
-        endTime = getTimeNow().replace(hour=23, minute=1, second=0)
+        endTime = getTimeNow().replace(hour=15, minute=1, second=0)
         if weekday != 6 and weekday != 7 and (startTime <= shanghaiTime <= endTime):     
             # 如果分钟数值变化了, 则可以更新
             result = False if cls.minuteNow == shanghaiTime.minute else True 

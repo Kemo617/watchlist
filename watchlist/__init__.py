@@ -43,9 +43,6 @@ login_manager.login_message = ''
 scheduler.init_app(app)
 scheduler.start()
 
-# 初始化socketio
-socketio = SocketIO(app)
-
 # 模板上下文处理函数, 注入用户信息
 @app.context_processor
 def inject_user():

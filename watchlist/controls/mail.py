@@ -52,12 +52,12 @@ def send_inform_mail(user, stocks):
     for stock in stocks:
         if stock.flag_is_informing:
             if stock.flag_max_informed is not True and stock.pricenow > stock.pricemaxset:
-                tips += "'%s(%s)'的当前价格 %.2f 高于目标高价 %.2f;\r\n" % (stock.stockname, stock.stockcode, stock.pricenow, stock.pricemaxset)
+                tips += "%s(%s)的当前价格 %.2f 高于目标高价 %.2f;\r\n" % (stock.stockname, stock.stockcode, stock.pricenow, stock.pricemaxset)
                 stock.flag_max_informed = True
                 db.session.commit()
                 flag_send = True
             if stock.flag_min_informed is not True and stock.pricenow < stock.priceminset:
-                tips += "'%s(%s)'的当前价格 %.2f 低于目标低价 %.2f;\r\n" % (stock.stockname, stock.stockcode, stock.pricenow, stock.priceminset)
+                tips += "%s(%s)的当前价格 %.2f 低于目标低价 %.2f;\r\n" % (stock.stockname, stock.stockcode, stock.pricenow, stock.priceminset)
                 stock.flag_min_informed = True
                 db.session.commit()
                 flag_send = True

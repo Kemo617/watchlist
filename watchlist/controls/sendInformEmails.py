@@ -33,9 +33,6 @@ def sendinformEmails():
                     stocks.append(stock)
                 flag_commit = flag_commit or send_inform_mail(user=user, stocks=stocks) 
 
-            if flag_commit:
-                db.session.commit()
-
             if ResetTrigger.isTimeToReset():
                 for stock in Stock.query.all():
                     stock.resetinformedflags()

@@ -1,7 +1,7 @@
 from watchlist.controls.mail import send_inform_mail
 from watchlist.controls.common import get_users, getTimeNow
 from watchlist.models import Stock
-from watchlist import app, db, scheduler
+from watchlist import app, db
 
 # ...
 
@@ -22,10 +22,7 @@ class ResetTrigger():
 
         return result
 
-# --------- 定时执行的任务 ------------
-# 发送提醒邮件的任务
-# 每20秒执行一次
-@scheduler.task('interval', id='send_informemails_task', seconds=20)
+# 发送提醒邮件的任务, 定时执行
 def sendinformEmails():
     try:
         flag_commit = False
@@ -39,9 +36,10 @@ def sendinformEmails():
 
         flag_commit = flag_commit or ResetTrigger.isTimeToReset()
         if flag_commit:
-            for stock in Stock.query.all():
-                stock.resetinformedflags()
-            db.session.commit() 
+            with app.app_context():
+                for stock in Stock.query.all():
+                    stock.resetinformedflags()
+                db.session.commit() 
     except BaseException as e:
             pass    
 

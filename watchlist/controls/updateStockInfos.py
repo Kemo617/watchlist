@@ -1,6 +1,5 @@
 from watchlist.controls.common import get_stockcodes_all, update_stockprices, getTimeNow
 from watchlist.controls.stock import getStockPrices
-from watchlist import scheduler
 
 # ...
 
@@ -25,11 +24,8 @@ class UpdateTrigger():
         cls.minuteNow = shanghaiTime.minute
         return result
 
-# --------- 定时执行的任务 ------------
-# 更新股票价格信息任务
-# 每20秒执行一次
-@scheduler.task('interval', id='update_stockinfo_task', seconds=20)
-def updateTask():
+# 更新股票价格信息任务, 定时执行
+def updateStockInfos():
     try:
         if UpdateTrigger.isTimeToUpdate():
             # 把所有用户的stockcode收集到一个set中, 然后查询更新所有的股票价格信息

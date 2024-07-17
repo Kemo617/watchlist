@@ -5,7 +5,7 @@ import requests as req
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from flask_apscheduler import APScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 
 # ...
 
@@ -40,11 +40,6 @@ def load_user(user_id):
 login_manager.login_view = 'login'
 login_manager.login_message = ''
 
-# 初始化定时任务
-scheduler = APScheduler()
-scheduler.init_app(app)
-scheduler.start()
-
 # 模板上下文处理函数, 注入用户信息
 @app.context_processor
 def inject_user():
@@ -68,4 +63,10 @@ def inject_stocks():
 from watchlist import test, commands
 from watchlist.views import errors, home, login, register, refresh
 from watchlist.views.operations import add, delete, edit, update
-from watchlist.controls import mail, stock, common, sendInformEmails, updateStockInfoTask
+from watchlist.controls import mail, stock, common, sendInformEmails, updateStockInfos
+
+# 初始化定时任务
+scheduler = BackgroundScheduler()
+scheduler.add_job(sendInformEmails.sendinformEmails, 'interval', id='send_inform_emails', seconds=20)
+scheduler.add_job(updateStockInfos.updateStockInfos, 'interval', id='update_stock_infos', seconds=20)
+scheduler.start()

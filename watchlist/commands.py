@@ -135,10 +135,11 @@ def deleteusertable():
 # 删除股票表
 @app.cli.command()
 def deletestocktable():
-    db.create_all()
-    db.session.execute(text("DROP TABLE IF EXISTS stocks"))
-    click.echo('Done')
-    db.create_all()
+    with app.app_context():
+        db.create_all()
+        db.session.execute(text("DROP TABLE IF EXISTS stocks"))
+        click.echo('Done')
+        db.create_all()
 
 # 清理数据库
 @app.cli.command()

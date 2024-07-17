@@ -1,6 +1,5 @@
-from watchlist import app
+from watchlist import app, db
 from watchlist.models import Stock, User
-from watchlist.database import db
 from datetime import datetime as dt
 import pytz
 

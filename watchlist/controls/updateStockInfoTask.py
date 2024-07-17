@@ -1,6 +1,6 @@
 from watchlist.controls.common import get_stockcodes_all, update_stockprices, getTimeNow
 from watchlist.controls.stock import getStockPrices
-from watchlist.schedule import scheduler
+from watchlist import scheduler
 
 # ...
 

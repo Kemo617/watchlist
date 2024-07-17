@@ -4,8 +4,8 @@ import requests as req
 
 from flask import Flask
 from flask_login import LoginManager
-from watchlist.database import db
-from watchlist.schedule import scheduler
+from flask_sqlalchemy import SQLAlchemy
+from flask_apscheduler import APScheduler
 
 # ...
 
@@ -25,6 +25,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # session 存储所需的密钥
 app.config['SECRET_KEY'] = 'kinson'
 
+db = SQLAlchemy()
 db.init_app(app)
 login_manager = LoginManager(app)
 
@@ -40,6 +41,7 @@ login_manager.login_view = 'login'
 login_manager.login_message = ''
 
 # 初始化定时任务
+scheduler = APScheduler()
 scheduler.init_app(app)
 scheduler.start()
 
@@ -63,7 +65,7 @@ def inject_stocks():
 
     return dict(stocks=stocks)
 
-from watchlist import test, commands, database, schedule
+from watchlist import test, commands
 from watchlist.views import errors, home, login, register, refresh
 from watchlist.views.operations import add, delete, edit, update
 from watchlist.controls import mail, stock, common, sendInformEmails, updateStockInfoTask

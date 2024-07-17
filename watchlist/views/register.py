@@ -2,8 +2,7 @@ from flask import render_template, request, flash, redirect, url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, EmailField
 from wtforms.validators import DataRequired, EqualTo, Length, Email
-from watchlist import app
-from watchlist.database import db
+from watchlist import app, db
 from watchlist.models import User
 from watchlist.controls.mail import send_confirm_mail
 

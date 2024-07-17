@@ -1,6 +1,5 @@
 from flask import redirect, url_for, request, flash
-from watchlist import app
-from watchlist.database import db
+from watchlist import app, db
 from watchlist.models import Stock
 from flask_login import login_required, current_user
 

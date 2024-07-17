@@ -1,8 +1,7 @@
 from watchlist.controls.mail import send_inform_mail
 from watchlist.controls.common import get_users, getTimeNow
-from watchlist.schedule import scheduler
 from watchlist.models import Stock
-from watchlist import app, db
+from watchlist import app, db, scheduler
 
 # ...
 

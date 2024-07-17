@@ -2,6 +2,7 @@ import smtplib
 from email.message import EmailMessage
 from watchlist.models import SMTP
 from flask import render_template, flash
+from watchlist import db
 
 # ...
 
@@ -44,6 +45,43 @@ def send_confirm_mail(user):
     
     return result
 
-
-
 # 发送定制的个股信息
+def send_inform_mail(user, stocks):
+    flag_send = False
+    tips = '提醒: '
+    for stock in stocks:
+        if stock.flag_is_informing:
+            if stock.flag_max_informed is not True and stock.pricenow > stock.pricemaxset:
+                tips += "'%s(%s)'的当前价格 %.2f 高于目标高价 %.2f;\r\n" % (stock.stockname, stock.stockcode, stock.pricenow, stock.pricemaxset)
+                stock.flag_max_informed = True
+                db.session.commit()
+                flag_send = True
+            if stock.flag_min_informed is not True and stock.pricenow < stock.priceminset:
+                tips += "'%s(%s)'的当前价格 %.2f 低于目标低价 %.2f;\r\n" % (stock.stockname, stock.stockcode, stock.pricenow, stock.priceminset)
+                stock.flag_min_informed = True
+                db.session.commit()
+                flag_send = True
+
+    if flag_send:
+        smtpinfo = SMTP.query.first()
+        if smtpinfo is not None:
+            servername = smtpinfo.server
+            sendername = smtpinfo.sendername
+            senderaddress = smtpinfo.senderaddress
+            password = smtpinfo.password
+
+            message = EmailMessage()
+            message['From'] = "%s<%s>" % (sendername, senderaddress)
+            message['To'] = "%s<%s>" % (user.username, user.email)
+            message['Subject'] = '股票价格提醒'
+            message.set_content(tips)
+            try:
+                with smtplib.SMTP(servername) as server:
+                    server.ehlo()
+                    server.starttls()
+                    server.login(senderaddress, password)
+                    server.send_message(message)
+            except BaseException as e:
+                pass
+
+    return flag_send

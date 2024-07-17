@@ -10,21 +10,30 @@
     <input class="btn" type="submit" name="submit" value="加自选">
 </form>
 {% endif %}
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function() 
+    {
+        setInterval(function() 
+        {
+            $.getJSON('/refresh_pagedata', function(data) 
+            {
+                $.each(data, function(key, value)
+                {
+                    $(key).text(value[0]);
+                    $(key).addClass(value[1]);
+                });
+            });
+        }, 5000); // 每5000毫秒刷新一次
+    });
+</script>
 <ul class="stock-list">
     {% for stock in stocks %}
     <li>
         <label class="labelstockcode">{{ stock.stockcode }}</label>
         <label class="labelstockname">{{ stock.stockname }}</label>
         <label class="labelstockpricetip">当前价</label>
-        {% if stock.getcolor() == 'red' %}
-        <label class="labelstockpriceRed">{{ stock.pricenow }}</label>
-        {% endif %}
-        {% if stock.getcolor() == 'green' %}
-        <label class="labelstockpriceGreen">{{ stock.pricenow }}</label>
-        {% endif %}
-        {% if stock.getcolor() == 'black' %}
-        <label class="labelstockprice">{{ stock.pricenow }}</label>
-        {% endif %}
+        <label class={{ stock.getcolorclass() }} id={{ stock.stockcode }}>{{ stock.pricenow }}</label>
         {% if stock.flag_is_informing %}
         <label class="labelstockpricetip">目标低价</label>
         <label class="labelstockpriceset">{{ stock.priceminset }}</label>
@@ -46,5 +55,3 @@
 </ul>
 
 {% endblock %}
-
-<!-- <a class="imdb" href="https://www.imdb.com/find?q={{ stock.title }}" target="_blank" title="查看详细个股信息">IMDb</a> -->

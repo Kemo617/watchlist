@@ -22,10 +22,11 @@ def update():
             stock.priceminset = 0.0 if priceminset < 0 else priceminset
             stock.pricemaxset = 0.0 if pricemaxset < 0 else pricemaxset
             stock.flag_is_informing = flag_is_informing
+            stock.resetinformedflags()
             db.session.commit()
             flash('更新了对自选股票的邮件提醒设置.')
     except BaseException as e:
-                flash(f"个股设置异常 --> {e}")
+        flash(f"个股设置异常 --> {e}")
 
     
     return redirect(url_for('home'))

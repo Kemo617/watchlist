@@ -4,7 +4,6 @@ from watchlist.schedule import scheduler
 
 # ...
 
-
 # 当前分钟类
 class UpdateTrigger():
     minuteNow = -1
@@ -28,7 +27,7 @@ class UpdateTrigger():
 
 # --------- 定时执行的任务 ------------
 # 更新股票价格信息任务
-# 每5秒执行一次
+# 每20秒执行一次
 @scheduler.task('interval', id='update_stockinfo_task', seconds=20)
 def updateTask():
     try:

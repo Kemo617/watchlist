@@ -77,7 +77,6 @@ with app.app_context():
         flag_max_informed = db.Column(db.Boolean)
         flag_min_informed = db.Column(db.Boolean)
         flag_is_informing = db.Column(db.Boolean)
-        flag_need_refresh = db.Column(db.Boolean)
 
         def __init__(self):
             # 设置的高提示价格
@@ -89,24 +88,22 @@ with app.app_context():
             self.flag_min_informed = False
             # 是否发送
             self.flag_is_informing = False
-            # 是否需要刷新
-            self.flag_need_refresh = False
 
             self.pricenow = 0.0
             self.priceyesterday = 0.0
 
         # 重置发送标识, 每天至少自动重置一次
-        def resetflags(self):
+        def resetinformedflags(self):
             self.flag_max_informed = False
             self.flag_min_informed = False
 
         # 判断当前股价跟上一交易日比, 涨还是跌
-        def getcolor(self):
-            result = 'black'
+        def getcolorclass(self):
+            result = "labelstockpriceBlack"
             if self.pricenow > self.priceyesterday:
-                result = 'red'
+                result = "labelstockpriceRed"
             elif self.pricenow < self.priceyesterday:
-                result = 'green'
+                result = "labelstockpriceGreen"
 
             return result
 

@@ -11,7 +11,7 @@
     <ul>
         {% if user.is_authenticated %}
         <li><a href="{{ url_for('home') }}">自选股列表</a></li>
-        <li><a class="float-right" href="{{ url_for('logout') }}">登出</a></li>
+        <li><a href="{{ url_for('logout') }}">登出</a></li>
         {% endif %}
     </ul>
 </nav>

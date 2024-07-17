@@ -64,6 +64,6 @@ def inject_stocks():
     return dict(stocks=stocks)
 
 from watchlist import test, commands, database, schedule
-from watchlist.views import errors, home, login, register, settings
+from watchlist.views import errors, home, login, register, refresh
 from watchlist.views.operations import add, delete, edit, update
-from watchlist.controls import mail, stock, common, sendInformEmails, updateStockInfoTask, freshPage
+from watchlist.controls import mail, stock, common, sendInformEmails, updateStockInfoTask

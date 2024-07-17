@@ -26,17 +26,17 @@ class ResetTrigger():
 def sendinformEmails():
     try:
         flag_commit = False
-
-        for user in get_users():
-            with app.app_context():
+        with app.app_context():
+            for user in get_users():               
                 stocks = []
                 for stock in Stock.query.filter_by(username=user.username):
                     stocks.append(stock)
                 flag_commit = flag_commit or send_inform_mail(user=user, stocks=stocks) 
 
-        flag_commit = flag_commit or ResetTrigger.isTimeToReset()
-        if flag_commit:
-            with app.app_context():
+            if flag_commit:
+                db.session.commit()
+
+            if ResetTrigger.isTimeToReset():
                 for stock in Stock.query.all():
                     stock.resetinformedflags()
                 db.session.commit() 

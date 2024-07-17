@@ -46,7 +46,7 @@ def inject_user():
     from flask_login import current_user
     return dict(user=current_user)
 
-# 模板上下文处理函数, 注入电影信息
+# 模板上下文处理函数, 注入股票信息
 @app.context_processor
 def inject_stocks():
     from watchlist.models import Stock

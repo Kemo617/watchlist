@@ -1,11 +1,12 @@
 import os
 import sys
 import requests as req
+import time
 
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from apscheduler.schedulers.background import BackgroundScheduler
+from threading import Thread
 
 # ...
 
@@ -66,7 +67,17 @@ from watchlist.views.operations import add, delete, edit, update
 from watchlist.controls import mail, stock, common, sendInformEmails, updateStockInfos
 
 # 初始化定时任务
-scheduler = BackgroundScheduler()
-scheduler.add_job(sendInformEmails.sendinformEmails, 'interval', id='send_inform_emails', seconds=20)
-scheduler.add_job(updateStockInfos.updateStockInfos, 'interval', id='update_stock_infos', seconds=20)
-scheduler.start()
+def thread_function():
+    while True:
+        try:
+            updateStockInfos.updateStockInfos()
+            sendInformEmails.sendinformEmails()
+        except BaseException as e:
+            pass
+        time.sleep(20)
+            
+thread = Thread(target=thread_function)
+thread.start()
+#scheduler.add_job(sendInformEmails.sendinformEmails, 'interval', id='send_inform_emails', seconds=20)
+#scheduler.add_job(updateStockInfos.updateStockInfos, 'interval', id='update_stock_infos', seconds=20)
+#scheduler.start()

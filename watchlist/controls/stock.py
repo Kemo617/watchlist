@@ -37,7 +37,8 @@ def get_stock_info(stockcode):
                 stockinfo = stockinfo_temp
             
     except BaseException as e:
-        flash(f"获取个股信息异常 --> {e}")
+        #flash(f"获取个股信息异常 --> {e}")
+        pass
 
     return stockinfo
 
@@ -57,7 +58,8 @@ def getStockName(stockcode):
         if stockcode == dataDict['SCODE']:
             result = dataDict['SNAME']
     except BaseException as e:
-        flash(f"获取个股名称异常 --> {e}")
+        #flash(f"获取个股名称异常 --> {e}")
+        pass
     
     return result
 
@@ -70,7 +72,8 @@ def getStockPrices(stockcode):
         if result is None:
             result = getStockPricesWithSecureid(stockcode=stockcode, secureid=SecureId.getNewSecureId())
     except BaseException as e:
-        flash(f"获取个股价格信息异常 --> {e}")
+        #flash(f"获取个股价格信息异常 --> {e}")
+        pass
 
     return result
 
